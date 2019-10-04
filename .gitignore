@@ -1,0 +1,15 @@
+Build/Bin/
+Build/Obj/
+.vs/
+
+*.sln
+
+*.vcxproj
+*.vcxproj.filters
+*.vcxproj.user
+
+*.obj
+*.idb
+*.odb
+*.log
+*.tlog

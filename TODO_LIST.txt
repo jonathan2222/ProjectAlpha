@@ -1,0 +1,5 @@
+Make the game.
+
+- Chunks with tiles
+- Rendering
+- Simple character
