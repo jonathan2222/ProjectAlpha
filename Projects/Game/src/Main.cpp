@@ -1,4 +1,4 @@
-#ifdef YAMI_PLATFORM_WINDOWS
+#ifdef PA_PLATFORM_WINDOWS
 	#include <Windows.h>
 #endif
 
@@ -6,7 +6,7 @@
 
 int main(int argc, char* argv[])
 {
-#ifdef YAMI_DEBUG
+#ifdef PA_DEBUG
 	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
 #endif
 
