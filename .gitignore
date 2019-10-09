@@ -13,3 +13,5 @@ Build/Obj/
 *.odb
 *.log
 *.tlog
+
+GenerateSolution.bat
