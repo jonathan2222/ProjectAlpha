@@ -1,0 +1,1 @@
+#define BYTE __int8 
