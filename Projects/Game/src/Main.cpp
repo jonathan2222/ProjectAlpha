@@ -3,6 +3,9 @@
 #endif
 
 #include <Engine/src/Display.h>
+#include <Engine/src/IO/Input.h>
+
+#include <iostream>
 
 int main(int argc, char* argv[])
 {
@@ -11,17 +14,19 @@ int main(int argc, char* argv[])
 #endif
 
 	Display display{ 600, 400, "Hellow World!" };
+	
+	pa::Input::get().init(display);
 
 	while (display.isOpen())
 	{
-		display.pollEvents();
+		pa::Input::get().update();
 		
 		glBegin(GL_TRIANGLES);
 			glVertex2f(-0.5f, -0.5f);
 			glVertex2f(0.5f, -0.5f);
 			glVertex2f(0.0f, 0.5f);
 		glEnd();
-
+		
 		display.swapBuffers();
 	}
 
