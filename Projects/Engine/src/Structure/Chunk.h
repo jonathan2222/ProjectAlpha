@@ -1,12 +1,12 @@
 #ifndef PA_CHUNK_H
 #define PA_CHUNK_H
 
-#include "Types.h"
+#include "../Types.h"
 
 namespace pa {
-	#define CHUNK_LEN_IN_CELLS 16
+	#define CHUNK_SIZE 16
 	#define CELL_SIZE 16
-	#define CHUNK_SIZE CHUNK_LEN_IN_CELLS * CHUNK_LEN_IN_CELLS
+	#define CHUNK_AREA CHUNK_SIZE * CHUNK_SIZE
 
 	class Chunk
 	{
