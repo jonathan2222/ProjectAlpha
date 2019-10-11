@@ -3,6 +3,11 @@
 #endif
 
 #include <Engine/src/Display.h>
+#include <iostream>
+
+
+#include "Engine/src/Structure/GridHandler.h"
+#include "Engine/src/Structure/GridRenderer.h"
 
 int main(int argc, char* argv[])
 {
@@ -12,15 +17,24 @@ int main(int argc, char* argv[])
 
 	Display display{ 600, 400, "Hellow World!" };
 
+	sf::Texture atlas;
+
+	if (!atlas.loadFromFile("res/tile_atlas.png")) {
+		std::cout << "Failed to load texture!" << std::endl;
+	}
+
+	sf::RenderStates states;
+	states.texture = &atlas;
+
+	pa::GridHandler gh;
+	
+	pa::GridRenderer gr(gh.getAllChunks());
+
 	while (display.isOpen())
 	{
 		display.pollEvents();
 		
-		glBegin(GL_TRIANGLES);
-			glVertex2f(-0.5f, -0.5f);
-			glVertex2f(0.5f, -0.5f);
-			glVertex2f(0.0f, 0.5f);
-		glEnd();
+		//gr.draw(display.getWindow(), states);
 
 		display.swapBuffers();
 	}
