@@ -22,7 +22,8 @@ int main(int argc, char* argv[])
 	if (!atlas.loadFromFile("res/tile_atlas.png")) {
 		std::cout << "Failed to load texture!" << std::endl;
 	}
-
+	sf::View view;
+	view.zoom(2.0f);
 	sf::RenderStates states;
 	states.texture = &atlas;
 
@@ -34,7 +35,8 @@ int main(int argc, char* argv[])
 	{
 		display.pollEvents();
 		
-		//gr.draw(display.getWindow(), states);
+		display.getWindow().setView(view);
+		gr.draw(display.getWindow(), states);
 
 		display.swapBuffers();
 	}
