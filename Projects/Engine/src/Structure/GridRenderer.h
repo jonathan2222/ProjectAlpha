@@ -17,8 +17,14 @@ namespace pa {
 
 		void draw(sf::RenderWindow& win, const sf::RenderStates& state);
 	private:
+		void generateQuads();
+		void generateDebugLines(const sf::Color& color);
+
+		bool showChunkGrid;
+
 		const std::vector<Chunk*>* chunks;
 		sf::VertexArray quads;
+		sf::VertexArray* debugLines;
 	};
 }
 
