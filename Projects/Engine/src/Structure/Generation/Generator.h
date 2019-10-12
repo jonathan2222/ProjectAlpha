@@ -9,8 +9,7 @@ namespace pa
 	class Generator
 	{
 	public:
-		virtual void generate(std::vector<Chunk*>& chunks) = 0;
-
+		virtual void generate(Chunk* chunk) = 0;
 	};
 }
 

@@ -43,7 +43,7 @@ void pa::Camera::freeMove(const float& dt)
 
 	int delta = input.getMouseWheelDelta();
 	if (delta)
-		this->scrollZoom(delta * dt);
+		this->scrollZoom(delta);
 
 	update();
 }

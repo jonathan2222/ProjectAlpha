@@ -24,7 +24,7 @@ int main(int argc, char* argv[])
 	pa::Input::get().init(display);
 
 	// Create camera
-	pa::Camera cam(256.0f, 100.0f, sf::Vector2f(0.f, 0.f));
+	pa::Camera cam(256.0f, 0.1f, sf::Vector2f(0.f, 0.f));
 
 	sf::Texture atlas;
 
