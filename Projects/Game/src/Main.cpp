@@ -12,6 +12,7 @@
 #include "Engine/src/Structure/GridHandler.h"
 #include "Engine/src/Structure/GridRenderer.h"
 #include "Engine/src/Structure/Generation/WorldBuilder.h"
+#include "Generation/MyGenerator.h"
 
 int main(int argc, char* argv[])
 {
@@ -37,6 +38,12 @@ int main(int argc, char* argv[])
 
 	pa::GridHandler gh;
 	
+	pa::WorldBuilder wb;
+	MyGenerator generator;
+	wb.setGenerator(&generator);
+	for(pa::Chunk* chunk : *gh.getAllChunks())
+		wb.generate(chunk);
+
 	pa::GridRenderer gr(gh.getAllChunks());
 
 	pa::Timer timer;

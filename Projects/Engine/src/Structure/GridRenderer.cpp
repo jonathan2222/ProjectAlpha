@@ -32,15 +32,12 @@ void pa::GridRenderer::generateQuads()
 {
 	int vIndex = 0;
 	int chunkCount = 1;
-	BYTE cellIndex = 0;
 
-	float centreToBorder = 0; //(GRID_SIZE / 2) * CHUNK_SIZE * CELL_SIZE;
+	float centreToBorder = (GRID_SIZE / 2) * CHUNK_SIZE * CELL_SIZE;
 	const sf::Vector2f centreOffset = sf::Vector2f(-centreToBorder, -centreToBorder);
 	sf::Vector2f globalOffset = centreOffset;
 
 	for (const Chunk* c : *this->chunks) {
-		cellIndex = c->getIndex(0, 0);
-
 		for (int x = 0; x < CHUNK_SIZE; x++) {
 			for (int y = 0; y < CHUNK_SIZE; y++) {
 
@@ -51,10 +48,12 @@ void pa::GridRenderer::generateQuads()
 				this->quads[vIndex + 2].position = sf::Vector2f(CELL_SIZE, 0.f) + globalOffset + quadOffset;
 				this->quads[vIndex + 3].position = sf::Vector2f(CELL_SIZE, CELL_SIZE) + globalOffset + quadOffset;
 
-				this->quads[vIndex + 0].texCoords = sf::Vector2f(0.f, 0.f);
-				this->quads[vIndex + 1].texCoords = sf::Vector2f(CELL_SIZE, 0.f);
-				this->quads[vIndex + 2].texCoords = sf::Vector2f(CELL_SIZE, CELL_SIZE);
-				this->quads[vIndex + 3].texCoords = sf::Vector2f(0.f, CELL_SIZE);
+				BYTE cellData = c->getData(x, y);
+				sf::Vector2f uvOffset((cellData*CELL_SIZE)%256, cellData * CELL_SIZE/256);
+				this->quads[vIndex + 0].texCoords = uvOffset + sf::Vector2f(0.f, 0.f);
+				this->quads[vIndex + 1].texCoords = uvOffset + sf::Vector2f(CELL_SIZE, 0.f);
+				this->quads[vIndex + 2].texCoords = uvOffset + sf::Vector2f(CELL_SIZE, CELL_SIZE);
+				this->quads[vIndex + 3].texCoords = uvOffset + sf::Vector2f(0.f, CELL_SIZE);
 
 				vIndex += 4;
 			}
@@ -81,7 +80,7 @@ void pa::GridRenderer::generateDebugLines(const sf::Color& color)
 	int chunkCount = 1;
 	BYTE cellIndex = 0;
 
-	float centreToBorder = 0; //(GRID_SIZE / 2) * CHUNK_SIZE * CELL_SIZE;
+	float centreToBorder = (GRID_SIZE / 2) * CHUNK_SIZE * CELL_SIZE;
 	const sf::Vector2f centreOffset = sf::Vector2f(-centreToBorder, -centreToBorder);
 	sf::Vector2f globalOffset = centreOffset;
 
