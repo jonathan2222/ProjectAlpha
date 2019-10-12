@@ -3,6 +3,7 @@
 #endif
 
 #include <Engine/src/Display.h>
+#include <Engine/src/IO/Input.h>
 #include <iostream>
 
 
@@ -16,6 +17,8 @@ int main(int argc, char* argv[])
 #endif
 
 	Display display{ 600, 400, "Hellow World!" };
+	
+	pa::Input::get().init(display);
 
 	sf::Texture atlas;
 
@@ -33,7 +36,7 @@ int main(int argc, char* argv[])
 
 	while (display.isOpen())
 	{
-		display.pollEvents();
+		pa::Input::get().update();
 		
 		display.getWindow().setView(view);
 		gr.draw(display.getWindow(), states);
