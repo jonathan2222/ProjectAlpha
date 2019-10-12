@@ -18,6 +18,7 @@ void Display::close()
 void Display::swapBuffers()
 {
     this->window.display();
+	this->window.clear();
 }
 
 sf::RenderWindow& Display::getWindow()

@@ -6,6 +6,7 @@
 #include <Engine/src/IO/Input.h>
 #include <iostream>
 
+#include "Engine/src/Structure/Camera.h"
 
 #include "Engine/src/Structure/GridHandler.h"
 #include "Engine/src/Structure/GridRenderer.h"
@@ -21,13 +22,15 @@ int main(int argc, char* argv[])
 	
 	pa::Input::get().init(display);
 
+	// Create camera
+	pa::Camera cam(0.25f, 0.1f, sf::Vector2f(0.f, 0.f));
+
 	sf::Texture atlas;
 
 	if (!atlas.loadFromFile("res/tile_atlas.png")) {
 		std::cout << "Failed to load texture!" << std::endl;
 	}
-	sf::View view;
-	view.zoom(2.0f);
+
 	sf::RenderStates states;
 	states.texture = &atlas;
 
@@ -39,7 +42,11 @@ int main(int argc, char* argv[])
 	{
 		pa::Input::get().update();
 		
-		display.getWindow().setView(view);
+		// Camera movement
+		cam.freeMove(1.0f);
+		display.getWindow().setView(cam.getView());
+
+		// Draw chunks
 		gr.draw(display.getWindow(), states);
 
 		display.swapBuffers();
