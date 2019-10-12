@@ -4,6 +4,7 @@
 
 #include <Engine/src/Display.h>
 #include <Engine/src/IO/Input.h>
+#include <Engine/src/Utils/Timer.h>
 #include <iostream>
 
 #include "Engine/src/Structure/Camera.h"
@@ -22,7 +23,7 @@ int main(int argc, char* argv[])
 	pa::Input::get().init(display);
 
 	// Create camera
-	pa::Camera cam(0.25f, 0.1f, sf::Vector2f(0.f, 0.f));
+	pa::Camera cam(256.0f, 100.0f, sf::Vector2f(0.f, 0.f));
 
 	sf::Texture atlas;
 
@@ -37,18 +38,20 @@ int main(int argc, char* argv[])
 	
 	pa::GridRenderer gr(gh.getAllChunks());
 
+	pa::Timer timer;
 	while (display.isOpen())
 	{
 		pa::Input::get().update();
 		
 		// Camera movement
-		cam.freeMove(1.0f);
+		cam.freeMove(timer.getDeltaTime());
 		display.getWindow().setView(cam.getView());
 
 		// Draw chunks
 		gr.draw(display.getWindow(), states);
 
 		display.swapBuffers();
+		timer.update();
 	}
 
 	return 0;
