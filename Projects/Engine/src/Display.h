@@ -14,7 +14,7 @@ public:
 
     bool isOpen();
 
-    void pollEvents();
+    void close();
 
     void swapBuffers();
 
