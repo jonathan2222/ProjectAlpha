@@ -4,8 +4,11 @@
 
 #include <Engine/src/Display.h>
 #include <Engine/src/IO/Input.h>
-
 #include <iostream>
+
+
+#include "Engine/src/Structure/GridHandler.h"
+#include "Engine/src/Structure/GridRenderer.h"
 
 int main(int argc, char* argv[])
 {
@@ -17,16 +20,27 @@ int main(int argc, char* argv[])
 	
 	pa::Input::get().init(display);
 
+	sf::Texture atlas;
+
+	if (!atlas.loadFromFile("res/tile_atlas.png")) {
+		std::cout << "Failed to load texture!" << std::endl;
+	}
+	sf::View view;
+	view.zoom(2.0f);
+	sf::RenderStates states;
+	states.texture = &atlas;
+
+	pa::GridHandler gh;
+	
+	pa::GridRenderer gr(gh.getAllChunks());
+
 	while (display.isOpen())
 	{
 		pa::Input::get().update();
 		
-		glBegin(GL_TRIANGLES);
-			glVertex2f(-0.5f, -0.5f);
-			glVertex2f(0.5f, -0.5f);
-			glVertex2f(0.0f, 0.5f);
-		glEnd();
-		
+		display.getWindow().setView(view);
+		gr.draw(display.getWindow(), states);
+
 		display.swapBuffers();
 	}
 

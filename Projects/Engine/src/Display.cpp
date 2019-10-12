@@ -10,9 +10,14 @@ bool Display::isOpen()
     return this->window.isOpen();
 }
 
-void Display::close()
+void Display::pollEvents()
 {
-	this->window.close();
+    sf::Event e;
+    while(this->window.pollEvent(e))
+    {
+        if(e.type == sf::Event::Closed)
+            this->window.close();
+    }
 }
 
 void Display::swapBuffers()
