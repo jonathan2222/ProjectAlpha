@@ -9,6 +9,7 @@
 
 #include "Engine/src/Structure/GridHandler.h"
 #include "Engine/src/Structure/GridRenderer.h"
+#include "Engine/src/Structure/Generation/WorldBuilder.h"
 
 int main(int argc, char* argv[])
 {
