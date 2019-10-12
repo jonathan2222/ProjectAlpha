@@ -13,7 +13,8 @@ public:
     Display(unsigned int width, unsigned int height, const std::string& title);
 
     bool isOpen();
-	void close();
+
+    void pollEvents();
 
     void swapBuffers();
 
