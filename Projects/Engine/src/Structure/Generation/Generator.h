@@ -9,7 +9,7 @@ namespace pa
 	class Generator
 	{
 	public:
-		virtual void generate(Chunk* chunk) = 0;
+		virtual void generate(int Xindex, int Yindex, Chunk* chunk) = 0;
 	};
 }
 

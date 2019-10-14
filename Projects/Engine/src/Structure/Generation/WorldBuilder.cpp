@@ -13,7 +13,7 @@ void pa::WorldBuilder::setGenerator(Generator* generator)
 	this->generator = generator;
 }
 
-void pa::WorldBuilder::generate(Chunk* chunk)
+void pa::WorldBuilder::generate(int Xindex, int Yindex, Chunk* chunk)
 {
-	this->generator->generate(chunk);
+	this->generator->generate(Xindex, Yindex, chunk);
 }

@@ -12,7 +12,7 @@ namespace pa
 		virtual ~WorldBuilder();
 
 		void setGenerator(Generator* generator);
-		void generate(Chunk* chunk);
+		void generate(int Xindex, int Yindex, Chunk* chunk);
 
 	private:
 		Generator* generator;
