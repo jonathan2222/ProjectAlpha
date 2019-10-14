@@ -5,6 +5,7 @@
 #include <Engine/src/Display.h>
 #include <Engine/src/IO/Input.h>
 #include <Engine/src/Utils/Timer.h>
+#include <Engine/src/Utils/Logger.h>
 #include <iostream>
 
 #include "Engine/src/Structure/Camera.h"
@@ -19,7 +20,7 @@ int main(int argc, char* argv[])
 #ifdef PA_DEBUG
 	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
 #endif
-
+	PA_LOG_INIT();
 	Display display{ 600, 400, "Hellow World!" };
 	
 	pa::Input::get().init(display);
@@ -30,7 +31,7 @@ int main(int argc, char* argv[])
 	sf::Texture atlas;
 
 	if (!atlas.loadFromFile("res/tile_atlas.png")) {
-		std::cout << "Failed to load texture!" << std::endl;
+		PA_LOG_WARN("Failed to load texture!");
 	}
 
 	sf::RenderStates states;
