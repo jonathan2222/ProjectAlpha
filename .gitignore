@@ -9,6 +9,7 @@ GenerateSolution.bat
 *.vcxproj
 *.vcxproj.filters
 *.vcxproj.user
+*.sln
 
 *.obj
 *.idb

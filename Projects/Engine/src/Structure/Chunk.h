@@ -2,6 +2,7 @@
 #define PA_CHUNK_H
 
 #include "../Types.h"
+#include "SFML/System/Vector2.hpp"
 
 namespace pa {
 	#define CHUNK_SIZE 16
@@ -11,18 +12,21 @@ namespace pa {
 	class Chunk
 	{
 		struct Cell {
-			BYTE index;
+			BYTE data;
 		};
 
 	public:
-		Chunk();
+		Chunk(const sf::Vector2i& index);
 		~Chunk();
 
-		void setIndex(int x, int y, BYTE index);
-		BYTE getIndex(int x, int y) const;
+		void setData(int x, int y, BYTE data);
+		BYTE getData(int x, int y) const;
+
+		sf::Vector2i getIndex() const;
 
 	private:
 		BYTE* cells;
+		sf::Vector2i index;
 
 	};
 }

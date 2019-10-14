@@ -11,6 +11,8 @@
 
 #include "Engine/src/Structure/GridHandler.h"
 #include "Engine/src/Structure/GridRenderer.h"
+#include "Engine/src/Structure/Generation/WorldBuilder.h"
+#include "Generation/MyGenerator.h"
 
 int main(int argc, char* argv[])
 {
@@ -23,7 +25,7 @@ int main(int argc, char* argv[])
 	pa::Input::get().init(display);
 
 	// Create camera
-	pa::Camera cam(256.0f, 100.0f, sf::Vector2f(0.f, 0.f));
+	pa::Camera cam(256.0f, 0.1f, sf::Vector2f(0.f, 0.f));
 
 	sf::Texture atlas;
 
@@ -36,6 +38,12 @@ int main(int argc, char* argv[])
 
 	pa::GridHandler gh;
 	
+	pa::WorldBuilder wb;
+	MyGenerator generator;
+	wb.setGenerator(&generator);
+	for(pa::Chunk* chunk : *gh.getAllChunks())
+		wb.generate(chunk);
+
 	pa::GridRenderer gr(gh.getAllChunks());
 
 	pa::Timer timer;

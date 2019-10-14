@@ -12,11 +12,11 @@ GridHandler::GridHandler()
 	//Chunk* ptr = new Chunk[chunkRows * chunkCols];
 
 	// Assign instances to pointers
-	this->chunks.resize(chunkRows * chunkCols);
+	this->chunks.resize((size_t)chunkRows * chunkCols);
 	for (int i = 0; i < chunkRows * chunkCols; i++)
-		this->chunks[i] = new Chunk();
+		this->chunks[i] = new Chunk({i% GRID_SIZE, i/GRID_SIZE});
 
-	int a = this->chunks[this->chunks.size() - 1]->getIndex(0, 0);
+	int a = this->chunks[this->chunks.size() - 1]->getData(0, 0);
 
 }
 
