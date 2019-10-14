@@ -36,6 +36,10 @@ int main(int argc, char* argv[])
 
 	sf::RenderStates states;
 	states.texture = &atlas;
+	sf::Shader shader;
+	shader.loadFromFile("res/Shaders/test.vert", "res/Shaders/test.frag");
+	shader.setParameter("texture", sf::Shader::CurrentTexture);
+	states.shader = &shader;
 
 	pa::GridHandler gh;
 	
