@@ -9,10 +9,11 @@
 
 #include "Engine/src/Structure/Camera.h"
 
-#include "Engine/src/Structure/GridHandler.h"
-#include "Engine/src/Structure/GridRenderer.h"
+#include "Engine/src/Structure/GridManager.h"
 #include "Engine/src/Structure/Generation/WorldBuilder.h"
 #include "Generation/MyGenerator.h"
+
+#include <cmath>
 
 int main(int argc, char* argv[])
 {
@@ -20,12 +21,12 @@ int main(int argc, char* argv[])
 	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
 #endif
 
-	Display display{ 600, 400, "Hellow World!" };
+	Display display{ 1920, 1080, "Hellow World!" };
 	
 	pa::Input::get().init(display);
 
 	// Create camera
-	pa::Camera cam(256.0f, 0.1f, sf::Vector2f(0.f, 0.f));
+	pa::Camera cam(256.0f, 0.1f, sf::Vector2f(0.f, 0.f), sf::Vector2f(1920, 1080));
 
 	sf::Texture atlas;
 
@@ -36,15 +37,24 @@ int main(int argc, char* argv[])
 	sf::RenderStates states;
 	states.texture = &atlas;
 
-	pa::GridHandler gh;
-	
+	sf::Vector2i gridPos(0, 0);
+
+	const int gridRows = 5;
+	const int gridCols = 10;
+	pa::GridManager grid(gridRows, gridCols);
 	pa::WorldBuilder wb;
 	MyGenerator generator;
-	wb.setGenerator(&generator);
-	for(pa::Chunk* chunk : *gh.getAllChunks())
-		wb.generate(chunk);
 
-	pa::GridRenderer gr(gh.getAllChunks());
+	wb.setGenerator(&generator);
+	std::vector<pa::Chunk*> chunks = grid.getChunks();
+	// PUT THIS IN world builder
+	for (int x = 0; x < gridCols; x++) {
+		for (int y = 0; y < gridRows; y++) {
+			pa::Chunk * c = chunks[x + y * gridCols];
+			wb.generate(gridPos.x+x, gridPos.y+y, c);
+			grid.updateUVCoords(sf::Vector2u(x, y));
+		}
+	}
 
 	pa::Timer timer;
 	while (display.isOpen())
@@ -55,8 +65,37 @@ int main(int argc, char* argv[])
 		cam.freeMove(timer.getDeltaTime());
 		display.getWindow().setView(cam.getView());
 
+		// PUT THIS IN NEW CLASS
+		sf::Vector2f camPos = cam.getCentre();
+		if (abs(cam.getCentre().x) > CHUNK_SIZE * CELL_SIZE) {
+			cam.setCentre(sf::Vector2f(0.f, camPos.y));
+			gridPos.x += int(abs(camPos.x) / camPos.x);
+
+			std::vector<pa::Chunk*> chunks = grid.getChunks();
+			for (int x = 0; x < gridCols; x++) {
+				for (int y = 0; y < gridRows; y++) {
+					pa::Chunk * c = chunks[x + y * gridCols];
+					wb.generate(gridPos.x + x, gridPos.y + y, c);
+					grid.updateUVCoords(sf::Vector2u(x, y));
+				}
+			}
+		}
+		if (abs(cam.getCentre().y) > CHUNK_SIZE * CELL_SIZE) {
+			cam.setCentre(sf::Vector2f(camPos.x, 0.f));
+			gridPos.y += int(abs(camPos.y) / camPos.y);
+
+			std::vector<pa::Chunk*> chunks = grid.getChunks();
+			for (int x = 0; x < gridCols; x++) {
+				for (int y = 0; y < gridRows; y++) {
+					pa::Chunk * c = chunks[x + y * gridCols];
+					wb.generate(gridPos.x + x, gridPos.y + y, c);
+					grid.updateUVCoords(sf::Vector2u(x, y));
+				}
+			}
+		}
+			
 		// Draw chunks
-		gr.draw(display.getWindow(), states);
+		grid.draw(display.getWindow(), states);
 
 		display.swapBuffers();
 		timer.update();
