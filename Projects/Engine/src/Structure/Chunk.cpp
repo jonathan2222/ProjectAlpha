@@ -2,7 +2,7 @@
 
 using namespace pa;
 
-Chunk::Chunk(const sf::Vector2i& index) : index(index)
+Chunk::Chunk(const sf::Vector2i& index)
 {
 	this->cells = new BYTE[CHUNK_AREA];
 }
@@ -22,9 +22,4 @@ BYTE Chunk::getData(int x, int y) const
 {
 	int offset = y * CHUNK_SIZE + x;
 	return this->cells[offset];
-}
-
-sf::Vector2i pa::Chunk::getIndex() const
-{
-	return this->index;
 }

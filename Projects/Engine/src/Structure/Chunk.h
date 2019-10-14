@@ -6,7 +6,7 @@
 
 namespace pa {
 	#define CHUNK_SIZE 16
-	#define CELL_SIZE 16
+	#define CELL_SIZE 32
 	#define CHUNK_AREA CHUNK_SIZE * CHUNK_SIZE
 
 	class Chunk
@@ -22,11 +22,8 @@ namespace pa {
 		void setData(int x, int y, BYTE data);
 		BYTE getData(int x, int y) const;
 
-		sf::Vector2i getIndex() const;
-
 	private:
 		BYTE* cells;
-		sf::Vector2i index;
 
 	};
 }
