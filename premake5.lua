@@ -22,7 +22,6 @@ workspace "ProjectAlpha"
 
 OUTPUT_DIR = "%{cfg.buildcfg}_%{cfg.system}_%{cfg.architecture}"
 
-
 -- ============================================ SFML ============================================
 function includeSFML()
 	includedirs { "Externals/SFML/Include/" }
@@ -51,6 +50,26 @@ function linkSFML()
 end
 -- ==============================================================================================
 
+-- =========================================== SPDLOG ===========================================
+
+function includeSpdlog()
+	includedirs { "Externals/SPDLOG/Include" }
+end
+
+function useSpdlog()
+	includeSpdlog()
+
+	filter "configurations:Debug"
+		libdirs "Externals/SPDLOG/Lib/Debug/spdlogd.lib"
+
+	filter "configurations:Release"
+		libdirs "Externals/SPDLOG/Lib/Release/spdlog.lib"
+	
+	filter {}
+end
+
+-- ==============================================================================================
+
 -- ============================================ MISC ============================================
 function addFiles()
 	files
@@ -74,6 +93,7 @@ function useEngine()
 	-- Link to the Engine Project and to SFML.
 	links "Engine"
 	linkSFML()
+	includeSpdlog()
 end
 
 -- ========================================== PROJECTS ==========================================
@@ -107,8 +127,9 @@ project "Engine"
 	addFiles()
 	
 	includeSFML()
-
 	defines "SFML_STATIC"
+
+	useSpdlog()
 
 	filter {}
 -- ==============================================================================================
