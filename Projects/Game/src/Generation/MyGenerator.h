@@ -6,7 +6,7 @@
 class MyGenerator : public pa::Generator
 {
 public:
-	void generate(pa::Chunk* chunk) override;
+	void generate(int Xindex, int Yindex, pa::Chunk* chunk) override;
 
 private:
 	BYTE getEnvironmentData(int y);

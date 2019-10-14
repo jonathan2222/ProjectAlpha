@@ -2,17 +2,16 @@
 
 #include <random>
 
-void MyGenerator::generate(pa::Chunk* chunk)
+void MyGenerator::generate(int Xindex, int Yindex, pa::Chunk* chunk)
 {
-	unsigned int seed = chunk->getIndex().x+ chunk->getIndex().y;
+	unsigned int seed = Xindex + Yindex;
 	std::srand(seed);
 	
 	for (int x = 0; x < CHUNK_SIZE; x++)
 	{
 		for (int y = 0; y < CHUNK_SIZE; y++)
 		{
-			sf::Vector2i index = chunk->getIndex();
-			BYTE data = getEnvironmentData(index.y*CHUNK_SIZE + y);
+			BYTE data = getEnvironmentData(Yindex*CHUNK_SIZE + y);
 			chunk->setData(x, y, data);
 		}
 	}
@@ -20,7 +19,7 @@ void MyGenerator::generate(pa::Chunk* chunk)
 
 BYTE MyGenerator::getEnvironmentData(int y)
 {
-	BYTE res = 6;
+	BYTE res = 0;
 	int grass = 12;
 	int dirt = 17;
 	int dirtStone = 21;
