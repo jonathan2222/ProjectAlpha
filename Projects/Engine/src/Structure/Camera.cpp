@@ -33,13 +33,13 @@ void pa::Camera::freeMove(const float& dt)
 	pa::Input& input = pa::Input::get();
 
 	if (input.isKey(pa::Input::Pressed, pa::Input::Key::A))
-		this->moveOrigin(sf::Vector2f(-moveSpeed * dt, 0.f));
+		this->moveCentre(sf::Vector2f(-moveSpeed * dt, 0.f));
 	if (input.isKey(pa::Input::Pressed, pa::Input::Key::D))
-		this->moveOrigin(sf::Vector2f(moveSpeed * dt, 0.f));
+		this->moveCentre(sf::Vector2f(moveSpeed * dt, 0.f));
 	if (input.isKey(pa::Input::Pressed, pa::Input::Key::W))
-		this->moveOrigin(sf::Vector2f(0.f, -moveSpeed * dt));
+		this->moveCentre(sf::Vector2f(0.f, -moveSpeed * dt));
 	if (input.isKey(pa::Input::Pressed, pa::Input::Key::S))
-		this->moveOrigin(sf::Vector2f(0.f, moveSpeed * dt));
+		this->moveCentre(sf::Vector2f(0.f, moveSpeed * dt));
 
 	int delta = input.getMouseWheelDelta();
 	if (delta)
@@ -49,14 +49,19 @@ void pa::Camera::freeMove(const float& dt)
 }
 
 
-void Camera::moveOrigin(const sf::Vector2f & offset)
+void Camera::moveCentre(const sf::Vector2f & offset)
 {
 	this->centre += offset;
 }
 
-void Camera::setOrigin(const sf::Vector2f & pos)
+void Camera::setCentre(const sf::Vector2f & pos)
 {
 	this->centre = pos;
+}
+
+sf::Vector2f Camera::getCentre() const
+{
+	return this->centre;
 }
 
 void Camera::setZoom(const float & zoom)
@@ -76,8 +81,4 @@ float pa::Camera::getZoom() const
 	return this->zoom;
 }
 
-sf::Vector2f pa::Camera::getOriginPos() const
-{
-	return this->centre;
-}
 
