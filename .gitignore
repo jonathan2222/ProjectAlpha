@@ -4,7 +4,7 @@ Build/Obj/
 
 *.sln
 
-premake5.lua
+GenerateSolution.bat
 
 *.vcxproj
 *.vcxproj.filters
