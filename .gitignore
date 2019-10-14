@@ -4,6 +4,8 @@ Build/Obj/
 
 *.sln
 
+premake5.lua
+
 *.vcxproj
 *.vcxproj.filters
 *.vcxproj.user
