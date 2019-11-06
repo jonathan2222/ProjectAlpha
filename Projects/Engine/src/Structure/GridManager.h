@@ -4,7 +4,6 @@
 #include <vector>
 #include <SFML/Graphics.hpp>
 
-
 namespace pa {
 	class Chunk;
 
@@ -19,6 +18,7 @@ namespace pa {
 
 		void updateUVCoords(const sf::Vector2u chunkIndex);
 		void draw(sf::RenderWindow& win, const sf::RenderStates& state);
+		void repositionQuadColumn(bool east);
 	private:
 		void generateQuads();
 		void generateDebugLines(const sf::Color& color);

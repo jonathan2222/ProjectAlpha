@@ -41,10 +41,10 @@ void pa::GridManager::updateUVCoords(const sf::Vector2u chunkIndex)
 
 		Chunk* chunk = this->chunks[chunkIndex.x + chunkIndex.y * this->cols];
 
-		int vIndex = (chunkIndex.x + chunkIndex.y * this->cols) * CHUNK_AREA * 4;
+		const int vertsPerQuad = 4;
+		int vIndex = (chunkIndex.x + chunkIndex.y * this->cols) * CHUNK_AREA * vertsPerQuad;
 		const float tileSize = 16.f;
 		const int textureSize = 256;
-
 		for (int x = 0; x < CHUNK_SIZE; x++) {
 			for (int y = 0; y < CHUNK_SIZE; y++) {
 				BYTE cellData = chunk->getData(x, y);
@@ -55,7 +55,7 @@ void pa::GridManager::updateUVCoords(const sf::Vector2u chunkIndex)
 				this->quads[vIndex + 2].texCoords = uvOffset + sf::Vector2f(tileSize, tileSize);
 				this->quads[vIndex + 3].texCoords = uvOffset + sf::Vector2f(0.f, tileSize);
 
-				vIndex += 4;
+				vIndex += vertsPerQuad;
 			}
 		}
 	}
@@ -68,13 +68,43 @@ void pa::GridManager::draw(sf::RenderWindow& win, const sf::RenderStates& state)
 		win.draw(*this->debugLines);
 }
 
+void pa::GridManager::repositionQuadColumn(bool east)
+{
+	const float gridColsPixel = (float)this->cols * CHUNK_SIZE * CELL_SIZE;
+
+	sf::Vector2f gridOffset(gridColsPixel, 0.f);
+	int vIndex = 0;
+
+	// Change offset dependeing on which column we wanna reposition
+	const int vertsPerQuad = 4;
+	if (east) {
+		gridOffset.x *= -1.f;
+		vIndex = CHUNK_SIZE * (this->cols-1) * vertsPerQuad;
+	}
+
+	
+	for (int c = 0; c < this->cols; c++) {
+		for (int x = 0; x < CHUNK_SIZE; x++) {
+			vIndex = x * vertsPerQuad;
+
+			for (int y = 0; y < CHUNK_SIZE; y++) {
+				this->quads[vIndex + 0].position += gridOffset;
+				this->quads[vIndex + 1].position += gridOffset;
+				this->quads[vIndex + 2].position += gridOffset;
+				this->quads[vIndex + 3].position += gridOffset;
+				vIndex += CHUNK_SIZE * this->cols * vertsPerQuad;
+			}
+		}
+	}
+}
+
 void pa::GridManager::generateQuads()
 {
 	int vIndex = 0;
 	int chunkCount = 1;
 
-	const float gridRowsPixel = this->rows * CHUNK_SIZE * CELL_SIZE;
-	const float gridColsPixel = this->cols * CHUNK_SIZE * CELL_SIZE;
+	const float gridRowsPixel = (float)this->rows * CHUNK_SIZE * CELL_SIZE;
+	const float gridColsPixel = (float)this->cols * CHUNK_SIZE * CELL_SIZE;
 	const sf::Vector2f centreOffset = sf::Vector2f(-gridColsPixel, -gridRowsPixel) * 0.5f;
 	sf::Vector2f globalOffset = centreOffset;
 
