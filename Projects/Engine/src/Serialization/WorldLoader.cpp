@@ -58,7 +58,7 @@ void pa::WorldLoader::updateChunk(Chunk* chunk, int x, int y)
 	if (file.is_open())
 	{
 		// TODO: This is bad to use!
-		char* data = new char[CHUNK_AREA];
+		char data[CHUNK_AREA];
 
 		if (this->lookup.empty() == false)
 		{
@@ -74,7 +74,6 @@ void pa::WorldLoader::updateChunk(Chunk* chunk, int x, int y)
 			{
 				// Chunk not found!
 				file.close();
-				delete[] data;
 				return;
 			}
 
@@ -84,7 +83,6 @@ void pa::WorldLoader::updateChunk(Chunk* chunk, int x, int y)
 		file.read(data, CHUNK_AREA);
 
 		decode(data, chunk);
-		delete[] data;
 		file.close();
 	}
 }
@@ -110,9 +108,24 @@ void pa::WorldLoader::saveChunk(Chunk* chunk, int x, int y)
 			{
 				// Append to end of file.
 				ChunkFileKey& key = this->lookup.back();
-				long pos = key.offset + key.size;
-				file.seekp(pos);
+				ChunkFileKey newKey;
+				newKey.x = x;
+				newKey.y = y;
+				newKey.offset = key.offset + key.size;
+				newKey.size = sizeof(BYTE) * CHUNK_AREA;
+				this->lookup.push_back(newKey);
+				file.seekp(newKey.offset);
 			}
+		}
+		else 
+		{
+			// Append first key to file.
+			ChunkFileKey newKey;
+			newKey.x = x;
+			newKey.y = y;
+			newKey.offset = 0;
+			newKey.size = sizeof(BYTE) * CHUNK_AREA;
+			this->lookup.push_back(newKey);
 		}
 
 		// Save to disk
