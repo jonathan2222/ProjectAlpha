@@ -9,8 +9,8 @@
 
 #include "Engine/src/Structure/Camera.h"
 
-#include "Engine/src/Structure/GridManager.h"
-#include "Engine/src/Structure/Generation/WorldBuilder.h"
+#include "Engine/src/Structure/World.h"
+#include "Engine/src/Structure/Rendering/Renderer.h"
 #include "Generation/MyGenerator.h"
 
 #include <cmath>
@@ -41,22 +41,15 @@ int main(int argc, char* argv[])
 
 	const int gridRows = 5;
 	const int gridCols = 10;
-	pa::GridManager grid(gridRows, gridCols);
-	pa::WorldBuilder wb;
+
 	MyGenerator generator;
+	pa::World testWorld(gridRows, gridCols, &generator);
 
-	wb.setGenerator(&generator);
-	std::vector<pa::Chunk*> chunks = grid.getChunks();
-	// PUT THIS IN world builder
-	for (int x = 0; x < gridCols; x++) {
-		for (int y = 0; y < gridRows; y++) {
-			pa::Chunk * c = chunks[x + y * gridCols];
-			wb.generate(gridPos.x+x, gridPos.y+y, c);
-			grid.updateUVCoords(sf::Vector2u(x, y));
-		}
-	}
+	pa::Renderer renderer;
 
+	testWorld.updateChunks();
 	pa::Timer timer;
+
 	while (display.isOpen())
 	{
 		pa::Input::get().update();
@@ -65,10 +58,10 @@ int main(int argc, char* argv[])
 		cam.freeMove(timer.getDeltaTime());
 		display.getWindow().setView(cam.getView());
 
+		// Check if world needs to load in new information. 
+		renderer.renderWorld(testWorld, cam);
 		
-			
-		// Draw chunks
-		grid.draw(display.getWindow(), states);
+		testWorld.draw(display.getWindow(), states);
 
 		display.swapBuffers();
 		timer.update();

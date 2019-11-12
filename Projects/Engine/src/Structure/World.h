@@ -12,7 +12,12 @@ namespace pa
 	public:
 		World(int rows, int cols, Generator* generator);
 
+		void draw(sf::RenderWindow& win, const sf::RenderStates& state);
+
+		void updateChunks();
+
 		sf::Vector2i getGridPos() const;
+		void offsetGridPos(sf::Vector2i offset);
 		GridManager& getGridManager();
 		WorldBuilder& getWorldBuilder();
 
