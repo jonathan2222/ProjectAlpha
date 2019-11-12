@@ -98,6 +98,16 @@ void pa::GridManager::repositionQuadColumn(bool east)
 	}
 }
 
+int pa::GridManager::getRows() const
+{
+	return this->rows;
+}
+
+int pa::GridManager::getCols() const
+{
+	return this->cols;
+}
+
 void pa::GridManager::generateQuads()
 {
 	int vIndex = 0;
