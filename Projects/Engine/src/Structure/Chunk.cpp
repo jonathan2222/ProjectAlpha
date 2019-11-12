@@ -23,3 +23,16 @@ BYTE Chunk::getData(int x, int y) const
 	int offset = y * CHUNK_SIZE + x;
 	return this->cells[offset];
 }
+
+BYTE* pa::Chunk::getAllData()
+{
+	return this->cells;
+}
+
+void pa::Chunk::setAllData(BYTE* data)
+{
+	for (int i = 0; i < CHUNK_AREA; i++)
+	{
+		this->cells[i] = data[i];
+	}
+}

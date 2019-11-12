@@ -22,6 +22,9 @@ namespace pa {
 		void setData(int x, int y, BYTE data);
 		BYTE getData(int x, int y) const;
 
+		BYTE* getAllData();
+		void setAllData(BYTE* data);
+
 	private:
 		BYTE* cells;
 
