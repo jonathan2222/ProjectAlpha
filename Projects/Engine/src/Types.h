@@ -1,1 +1,1 @@
-#define BYTE __int8 
+#define PA_BYTE __int8 

@@ -12,21 +12,21 @@ namespace pa {
 	class Chunk
 	{
 		struct Cell {
-			BYTE data;
+			PA_BYTE data;
 		};
 
 	public:
 		Chunk(const sf::Vector2i& index);
 		~Chunk();
 
-		void setData(int x, int y, BYTE data);
-		BYTE getData(int x, int y) const;
+		void setData(int x, int y, PA_BYTE data);
+		PA_BYTE getData(int x, int y) const;
 
-		BYTE* getAllData();
-		void setAllData(BYTE* data);
+		PA_BYTE* getAllData();
+		void setAllData(PA_BYTE* data);
 
 	private:
-		BYTE* cells;
+		PA_BYTE* cells;
 
 	};
 }

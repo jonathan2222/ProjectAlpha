@@ -112,7 +112,7 @@ void pa::WorldLoader::saveChunk(Chunk* chunk, int x, int y)
 				newKey.x = x;
 				newKey.y = y;
 				newKey.offset = key.offset + key.size;
-				newKey.size = sizeof(BYTE) * CHUNK_AREA;
+				newKey.size = sizeof(PA_BYTE) * CHUNK_AREA;
 				this->lookup.push_back(newKey);
 				file.seekp(newKey.offset);
 			}
@@ -124,7 +124,7 @@ void pa::WorldLoader::saveChunk(Chunk* chunk, int x, int y)
 			newKey.x = x;
 			newKey.y = y;
 			newKey.offset = 0;
-			newKey.size = sizeof(BYTE) * CHUNK_AREA;
+			newKey.size = sizeof(PA_BYTE) * CHUNK_AREA;
 			this->lookup.push_back(newKey);
 		}
 
@@ -142,7 +142,7 @@ void pa::WorldLoader::defragment()
 
 std::pair<char*, int> pa::WorldLoader::encode(Chunk* chunk)
 {
-	return std::pair<char*, int>(chunk->getAllData(), sizeof(BYTE) * CHUNK_AREA);
+	return std::pair<char*, int>(chunk->getAllData(), sizeof(PA_BYTE) * CHUNK_AREA);
 }
 
 void pa::WorldLoader::decode(char* data, Chunk* chunk)
