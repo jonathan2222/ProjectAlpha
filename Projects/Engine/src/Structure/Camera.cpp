@@ -35,14 +35,18 @@ void pa::Camera::freeMove(const float& dt)
 {
 	pa::Input& input = pa::Input::get();
 
+	float shiftSpeed = 1.0f;
+	if (input.isKey(pa::Input::Pressed, pa::Input::Key::LShift))
+		shiftSpeed = 5.0f;
+
 	if (input.isKey(pa::Input::Pressed, pa::Input::Key::A))
-		this->moveCentre(sf::Vector2f(-moveSpeed * dt, 0.f));
+		this->moveCentre(sf::Vector2f(-shiftSpeed *moveSpeed * dt, 0.f));
 	if (input.isKey(pa::Input::Pressed, pa::Input::Key::D))
-		this->moveCentre(sf::Vector2f(moveSpeed * dt, 0.f));
+		this->moveCentre(sf::Vector2f(shiftSpeed * moveSpeed * dt, 0.f));
 	if (input.isKey(pa::Input::Pressed, pa::Input::Key::W))
-		this->moveCentre(sf::Vector2f(0.f, -moveSpeed * dt));
+		this->moveCentre(sf::Vector2f(0.f, -shiftSpeed * moveSpeed * dt));
 	if (input.isKey(pa::Input::Pressed, pa::Input::Key::S))
-		this->moveCentre(sf::Vector2f(0.f, moveSpeed * dt));
+		this->moveCentre(sf::Vector2f(0.f, shiftSpeed * moveSpeed * dt));
 
 	int delta = input.getMouseWheelDelta();
 	if (delta)
