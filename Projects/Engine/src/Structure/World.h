@@ -5,6 +5,8 @@
 #include "Generation/WorldBuilder.h"
 #include "Generation/Generator.h"
 
+#include "Camera.h"
+
 namespace pa
 {
 	class World
@@ -13,15 +15,21 @@ namespace pa
 		World(int rows, int cols, Generator* generator);
 
 		void draw(sf::RenderWindow& win, const sf::RenderStates& state);
+		void update(const float& dt);
 
 		void updateChunks();
 
 		sf::Vector2i getGridPos() const;
 		void offsetGridPos(sf::Vector2i offset);
+
+		Camera& getCamera();
+
 		GridManager& getGridManager();
 		WorldBuilder& getWorldBuilder();
 
 	private:
+		Camera worldCam;
+
 		GridManager grid;
 		WorldBuilder builder;
 		sf::Vector2i gridPos;

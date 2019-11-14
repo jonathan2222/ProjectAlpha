@@ -1,14 +1,39 @@
 #include "World.h"
 
-pa::World::World(int rows, int cols, Generator* generator) : grid(rows, cols), gridPos(0, 0)
+#include "../IO/Input.h"
+#include <iostream>
+
+pa::World::World(int rows, int cols, Generator* generator) 
+	: grid(rows, cols), 
+	gridPos(0, 0),
+	worldCam(256.0f, 0.1f, sf::Vector2f(0.f, 0.f), sf::Vector2f(1920, 1080))
 {
 	this->builder.setGenerator(generator);
 }
 
 void pa::World::draw(sf::RenderWindow& win, const sf::RenderStates& state)
 {
+	win.setView(this->worldCam.getView());
 	// Draw chunks
 	grid.draw(win, state);
+}
+
+void pa::World::update(const float& dt)
+{
+	// Camera movement
+	this->worldCam.freeMove(dt);
+
+	if (Input::get().isMB(Input::Pressed, Input::MB::Left)) {
+		
+		sf::Vector2f mousePos = this->worldCam.getMouseGlobalPos();
+
+		sf::Vector2i gridIndex = this->grid.getChunkIndex(mousePos);
+		sf::Vector2i cellIndex = this->grid.getCellIndex(mousePos);
+
+		std::cout << "x: " << mousePos.x << " y: " << mousePos.y << 
+			" CellX: " << cellIndex.x << " CellY: " << cellIndex.y <<
+			" GridX: " << gridIndex.x << " GridY: " << gridIndex.y << std::endl;
+	}
 }
 
 void pa::World::updateChunks()
@@ -32,6 +57,11 @@ sf::Vector2i pa::World::getGridPos() const
 void pa::World::offsetGridPos(sf::Vector2i offset)
 {
 	this->gridPos += offset;
+}
+
+pa::Camera& pa::World::getCamera()
+{
+	return this->worldCam;
 }
 
 pa::GridManager& pa::World::getGridManager()

@@ -47,7 +47,7 @@ void pa::GridManager::updateUVCoords(const sf::Vector2u chunkIndex)
 		const int textureSize = 256;
 		for (int x = 0; x < CHUNK_SIZE; x++) {
 			for (int y = 0; y < CHUNK_SIZE; y++) {
-				BYTE cellData = chunk->getData(x, y);
+				PA_BYTE cellData = chunk->getData(x, y);
 
 				sf::Vector2f uvOffset((float)((cellData*(int)tileSize) % textureSize), (float)((int)(cellData * (int)tileSize) / textureSize));
 				this->quads[vIndex + 0].texCoords = uvOffset + sf::Vector2f(0.f, 0.f);
@@ -98,6 +98,32 @@ void pa::GridManager::repositionQuadColumn(bool east)
 	}
 }
 
+sf::Vector2i pa::GridManager::getCellIndex(const sf::Vector2f& globalPosition) const
+{
+	sf::Vector2i chunkIndex = getChunkIndex(globalPosition);
+	sf::Vector2i cellIndex(0, 0);
+
+	cellIndex.x = abs((globalPosition.x - chunkIndex.x * CHUNK_SIZE * CELL_SIZE) / CELL_SIZE);
+	cellIndex.y = abs((globalPosition.y - chunkIndex.y * CHUNK_SIZE * CELL_SIZE) / CELL_SIZE);
+
+	return cellIndex;
+}
+
+sf::Vector2i pa::GridManager::getChunkIndex(const sf::Vector2f& globalPosition) const
+{
+	sf::Vector2i chunkIndex(0, 0);
+
+	if (globalPosition.x < 0)
+		chunkIndex.x--;
+	if (globalPosition.y > 0)
+		chunkIndex.y++;
+
+	chunkIndex.x += (int)(globalPosition.x / (CHUNK_SIZE * CELL_SIZE));
+	chunkIndex.y += (int)(globalPosition.y / (CHUNK_SIZE * CELL_SIZE));
+
+	return chunkIndex;
+}
+
 int pa::GridManager::getRows() const
 {
 	return this->rows;
@@ -130,7 +156,7 @@ void pa::GridManager::generateQuads()
 				this->quads[vIndex + 2].position = sf::Vector2f(CELL_SIZE, 0.f) + globalOffset + quadOffset;
 				this->quads[vIndex + 3].position = sf::Vector2f(CELL_SIZE, CELL_SIZE) + globalOffset + quadOffset;
 
-				BYTE cellData = 0;
+				PA_BYTE cellData = 0;
 				sf::Vector2f uvOffset((float)((cellData*(int)tileSize)% textureSize), (float)((int)(cellData * (int)tileSize) / textureSize));
 				this->quads[vIndex + 0].texCoords = uvOffset + sf::Vector2f(0.f, 0.f);
 				this->quads[vIndex + 1].texCoords = uvOffset + sf::Vector2f(tileSize, 0.f);
@@ -160,7 +186,7 @@ void pa::GridManager::generateDebugLines(const sf::Color& color)
 
 	int vIndex = 0;
 	int chunkCount = 1;
-	BYTE cellIndex = 0;
+	PA_BYTE cellIndex = 0;
 
 	const float gridRowsPixel = this->rows * CHUNK_SIZE * CELL_SIZE;
 	const float gridColsPixel = this->cols * CHUNK_SIZE * CELL_SIZE;

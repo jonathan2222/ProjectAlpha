@@ -7,8 +7,6 @@
 #include <Engine/src/Utils/Timer.h>
 #include <iostream>
 
-#include "Engine/src/Structure/Camera.h"
-
 #include "Engine/src/Structure/World.h"
 #include "Engine/src/Structure/Rendering/Renderer.h"
 #include "Generation/MyGenerator.h"
@@ -21,12 +19,11 @@ int main(int argc, char* argv[])
 	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
 #endif
 
-	Display display{ 1920, 1080, "Hellow World!" };
-	
+	Display& display = Display::get();
+	display.init(1920, 1080, "Hellow World!");
 	pa::Input::get().init(display);
 
-	// Create camera
-	pa::Camera cam(256.0f, 0.1f, sf::Vector2f(0.f, 0.f), sf::Vector2f(1920, 1080));
+
 
 	sf::Texture atlas;
 
@@ -40,7 +37,7 @@ int main(int argc, char* argv[])
 	sf::Vector2i gridPos(0, 0);
 
 	const int gridRows = 5;
-	const int gridCols = 10;
+	const int gridCols = 9;
 
 	MyGenerator generator;
 	pa::World testWorld(gridRows, gridCols, &generator);
@@ -53,14 +50,11 @@ int main(int argc, char* argv[])
 	while (display.isOpen())
 	{
 		pa::Input::get().update();
-		
-		// Camera movement
-		cam.freeMove(timer.getDeltaTime());
-		display.getWindow().setView(cam.getView());
 
 		// Check if world needs to load in new information. 
-		renderer.renderWorld(testWorld, cam);
+		renderer.renderWorld(testWorld);
 		
+		testWorld.update(timer.getDeltaTime());
 		testWorld.draw(display.getWindow(), states);
 
 		display.swapBuffers();

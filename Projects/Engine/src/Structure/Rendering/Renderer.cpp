@@ -11,10 +11,11 @@ pa::Renderer::~Renderer()
 {
 }
 
-void pa::Renderer::renderWorld(World& world, Camera& cam)
+void pa::Renderer::renderWorld(World& world)
 {
+	Camera& cam = world.getCamera();
 	sf::Vector2f camPos = cam.getCentre();
-	if (abs(cam.getCentre().x) > CHUNK_SIZE* CELL_SIZE) {
+	if (abs(camPos.x) > CHUNK_SIZE* CELL_SIZE) {
 		cam.setCentre(sf::Vector2f(0.f, camPos.y));
 		world.offsetGridPos(sf::Vector2i(int(abs(camPos.x) / camPos.x), 0));
 
