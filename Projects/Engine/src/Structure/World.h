@@ -4,14 +4,15 @@
 #include "GridManager.h"
 #include "Generation/WorldBuilder.h"
 #include "Generation/Generator.h"
+#include "../Serialization/WorldLoader.h"
 
 namespace pa
 {
 	class World
 	{
 	public:
-		World(int rows, int cols, Generator* generator);
-
+		World(int rows, int cols, Generator* generator, const std::string& name);
+		
 		void draw(sf::RenderWindow& win, const sf::RenderStates& state);
 
 		void updateChunks();
@@ -24,6 +25,7 @@ namespace pa
 	private:
 		GridManager grid;
 		WorldBuilder builder;
+		WorldLoader loader;
 		sf::Vector2i gridPos;
 	};
 }

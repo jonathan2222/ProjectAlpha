@@ -17,21 +17,24 @@ namespace pa
 	class WorldLoader
 	{
 	public:
-		WorldLoader(const std::string& worldName);
+		WorldLoader();
 
-		// (x, y, i, s)
+		void init(const std::string& worldName);
+
 		void loadLookupTable();
 		void saveLookupTable();
 
 		void updateChunk(Chunk* chunk, int x, int y);
 		void saveChunk(Chunk* chunk, int x, int y);
 
+		std::vector<ChunkFileKey>::iterator find(int x, int y);
+		std::vector<ChunkFileKey>::iterator listBegin();
+		std::vector<ChunkFileKey>::iterator listEnd();
+
 		void defragment();
 	private:
 		std::pair<char*, int> encode(Chunk* chunk);
 		void decode(char* data, Chunk* chunk);
-
-		std::vector<ChunkFileKey>::iterator find(int x, int y);
 
 		std::vector<ChunkFileKey> lookup;
 		std::string worldName;

@@ -2,8 +2,14 @@
 
 #include <fstream>
 
-pa::WorldLoader::WorldLoader(const std::string& worldName) : worldName(worldName)
+pa::WorldLoader::WorldLoader()
 {
+}
+
+void pa::WorldLoader::init(const std::string& worldName)
+{
+	this->worldName = worldName;
+	loadLookupTable();
 }
 
 void pa::WorldLoader::loadLookupTable()
@@ -53,7 +59,7 @@ void pa::WorldLoader::saveLookupTable()
 void pa::WorldLoader::updateChunk(Chunk* chunk, int x, int y)
 {
 	// Open file for input.
-	std::ifstream file(this->worldName + ".chd", std::ios::binary);
+	std::ifstream file(this->worldName + ".chd", std::ios::binary | std::ios_base::app);
 
 	if (file.is_open())
 	{
@@ -90,7 +96,7 @@ void pa::WorldLoader::updateChunk(Chunk* chunk, int x, int y)
 void pa::WorldLoader::saveChunk(Chunk* chunk, int x, int y)
 {
 	// Open file for output.
-	std::ofstream file(this->worldName + ".chd", std::ios::binary);
+	std::ofstream file(this->worldName + ".chd", std::ios_base::binary | std::ios_base::app);
 
 	if (file.is_open())
 	{
@@ -101,8 +107,7 @@ void pa::WorldLoader::saveChunk(Chunk* chunk, int x, int y)
 			{
 				// Insert at chunk pos
 				ChunkFileKey& key = *it;
-				long pos = key.offset;
-				file.seekp(pos);
+				file.seekp(key.offset);
 			}
 			else
 			{
@@ -117,7 +122,7 @@ void pa::WorldLoader::saveChunk(Chunk* chunk, int x, int y)
 				file.seekp(newKey.offset);
 			}
 		}
-		else 
+		else
 		{
 			// Append first key to file.
 			ChunkFileKey newKey;
@@ -136,6 +141,28 @@ void pa::WorldLoader::saveChunk(Chunk* chunk, int x, int y)
 	}
 }
 
+std::vector<pa::ChunkFileKey>::iterator pa::WorldLoader::find(int x, int y)
+{
+	for (std::vector<pa::ChunkFileKey>::iterator& it = this->lookup.begin(); it != this->lookup.end(); it++)
+	{
+		ChunkFileKey& key = *it;
+		if (key.x == x && key.y == y)
+			return it;
+	}
+	return this->lookup.end();
+}
+
+std::vector<pa::ChunkFileKey>::iterator pa::WorldLoader::listBegin()
+{
+	return this->lookup.begin();
+}
+
+std::vector<pa::ChunkFileKey>::iterator pa::WorldLoader::listEnd()
+{
+	return this->lookup.end();
+}
+
+
 void pa::WorldLoader::defragment()
 {
 }
@@ -148,15 +175,4 @@ std::pair<char*, int> pa::WorldLoader::encode(Chunk* chunk)
 void pa::WorldLoader::decode(char* data, Chunk* chunk)
 {
 	chunk->setAllData(data);
-}
-
-std::vector<pa::ChunkFileKey>::iterator pa::WorldLoader::find(int x, int y)
-{
-	for (std::vector<pa::ChunkFileKey>::iterator& it = this->lookup.begin(); it != this->lookup.end(); it++)
-	{
-		ChunkFileKey& key = *it;
-		if (key.x == x && key.y == y)
-			return it;
-	}
-	return this->lookup.end();
 }
