@@ -20,6 +20,9 @@ namespace pa {
 		void setCentre(const sf::Vector2f& pos);
 		sf::Vector2f getCentre() const;
 
+		sf::Vector2f getMouseGlobalPos() const;
+		sf::Vector2f getWorldPos() const;
+
 		void setZoom(const float& zoom);
 		void scrollZoom(const float& delta);
 
@@ -29,10 +32,12 @@ namespace pa {
 		sf::View view;
 
 		sf::Vector2f centre;
+		sf::Vector2f worldPos;
 
 		float zoom;
 		float zoomSpeed;
 		float moveSpeed;
+
 	};
 }
 #endif

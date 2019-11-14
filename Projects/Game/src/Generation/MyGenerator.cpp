@@ -11,15 +11,15 @@ void MyGenerator::generate(int Xindex, int Yindex, pa::Chunk* chunk)
 	{
 		for (int y = 0; y < CHUNK_SIZE; y++)
 		{
-			BYTE data = getEnvironmentData(Yindex*CHUNK_SIZE + y);
+			PA_BYTE data = getEnvironmentData(Yindex*CHUNK_SIZE + y);
 			chunk->setData(x, y, data);
 		}
 	}
 }
 
-BYTE MyGenerator::getEnvironmentData(int y)
+PA_BYTE MyGenerator::getEnvironmentData(int y)
 {
-	BYTE res = 0;
+	PA_BYTE res = 0;
 	int grass = 12;
 	int dirt = 17;
 	int dirtStone = 21;

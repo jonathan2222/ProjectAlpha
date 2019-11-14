@@ -1,5 +1,8 @@
 #include "Camera.h"
 
+#include "Chunk.h"
+
+#include "../Display.h"
 #include "../IO/Input.h"
 #include <iostream>
 
@@ -52,6 +55,7 @@ void pa::Camera::freeMove(const float& dt)
 void Camera::moveCentre(const sf::Vector2f & offset)
 {
 	this->centre += offset;
+	this->worldPos += offset;
 }
 
 void Camera::setCentre(const sf::Vector2f & pos)
@@ -62,6 +66,39 @@ void Camera::setCentre(const sf::Vector2f & pos)
 sf::Vector2f Camera::getCentre() const
 {
 	return this->centre;
+}
+
+sf::Vector2f pa::Camera::getMouseGlobalPos() const
+{
+	const sf::Vector2i mpIntegers = Input::get().getMousePosition();
+	sf::Vector2f mousePos(mpIntegers.x, mpIntegers.y);
+
+	// Recentre origo for mouse position to upp
+	mousePos.x -= Display::get().getWidth() * 0.5f;
+	mousePos.y -= Display::get().getHeight() * 0.5f;
+
+	// Take camera zoom into account
+	float zoomMagnitude = this->zoom;
+	mousePos *= zoomMagnitude;
+
+	// Move mouse pos into world coordinates
+	mousePos.x += this->worldPos.x;
+	mousePos.y += this->worldPos.y;
+
+	// Offset to upperleft corner of chunk
+	const int halfChunkPixelLength = CHUNK_SIZE * CELL_SIZE * 0.5;
+	mousePos.x += halfChunkPixelLength;
+	mousePos.y += halfChunkPixelLength;
+
+	// invert to postive Y upwards
+	mousePos.y *= -1.0f;
+
+	return mousePos;
+}
+
+sf::Vector2f pa::Camera::getWorldPos() const
+{
+	return this->worldPos;
 }
 
 void Camera::setZoom(const float & zoom)

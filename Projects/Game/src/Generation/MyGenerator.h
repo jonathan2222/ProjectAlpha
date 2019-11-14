@@ -9,7 +9,7 @@ public:
 	void generate(int Xindex, int Yindex, pa::Chunk* chunk) override;
 
 private:
-	BYTE getEnvironmentData(int y);
+	PA_BYTE getEnvironmentData(int y);
 };
 
 #endif

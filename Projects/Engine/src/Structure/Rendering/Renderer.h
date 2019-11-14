@@ -14,7 +14,7 @@ namespace pa {
 		Renderer();
 		~Renderer();
 
-		void renderWorld(World& world, Camera& cam);
+		void renderWorld(World& world);
 
 	private:
 
