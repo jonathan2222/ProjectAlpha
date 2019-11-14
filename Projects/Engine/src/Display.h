@@ -10,7 +10,15 @@
 class Display
 {
 public:
-    Display(unsigned int width, unsigned int height, const std::string& title);
+	/*
+		Get singleton of display
+	*/
+	static Display& get();
+
+	/*
+		Initilize display instance
+	*/
+	void init(unsigned int width, unsigned int height, const std::string& title);
 
     bool isOpen();
 

@@ -1,11 +1,20 @@
 #include "Display.h"
 
- Display::Display(unsigned int width, unsigned int height, const std::string& title) : width(width), height(height), title(title)
+Display& Display::get()
+{
+	static Display display;
+	return display;
+}
+
+void Display::init(unsigned int width, unsigned int height, const std::string& title)
  {
-     this->window.create(sf::VideoMode(this->width, this->height), this->title);
+	this->width = width;
+	this->height = height;
+	this->title = title;
+	this->window.create(sf::VideoMode(this->width, this->height), this->title);
  }
 
-bool Display::isOpen()
+ bool Display::isOpen()
 {
     return this->window.isOpen();
 }
