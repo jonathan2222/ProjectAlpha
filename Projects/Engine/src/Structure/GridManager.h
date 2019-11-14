@@ -20,6 +20,8 @@ namespace pa {
 		void draw(sf::RenderWindow& win, const sf::RenderStates& state);
 		void repositionQuadColumn(bool east);
 
+		Chunk* getChunk(const sf::Vector2i& chunkIndex);
+
 		sf::Vector2i getCellIndex(const sf::Vector2f& globalPosition) const;
 		sf::Vector2i getChunkIndex(const sf::Vector2f& globalPosition) const;
 

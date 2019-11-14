@@ -98,6 +98,11 @@ void pa::GridManager::repositionQuadColumn(bool east)
 	}
 }
 
+Chunk* pa::GridManager::getChunk(const sf::Vector2i& chunkIndex)
+{
+	return this->chunks[chunkIndex.x + chunkIndex.y * this->cols];
+}
+
 sf::Vector2i pa::GridManager::getCellIndex(const sf::Vector2f& globalPosition) const
 {
 	sf::Vector2i chunkIndex = getChunkIndex(globalPosition);

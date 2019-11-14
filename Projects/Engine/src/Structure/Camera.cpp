@@ -72,7 +72,7 @@ sf::Vector2f Camera::getCentre() const
 	return this->centre;
 }
 
-sf::Vector2f pa::Camera::getMouseGlobalPos() const
+sf::Vector2f pa::Camera::getGlobalMousePos() const
 {
 	const sf::Vector2i mpIntegers = Input::get().getMousePosition();
 	sf::Vector2f mousePos(mpIntegers.x, mpIntegers.y);

@@ -26,14 +26,23 @@ void pa::World::update(const float& dt)
 
 	if (Input::get().isMB(Input::Pressed, Input::MB::Left)) {
 		
-		sf::Vector2f mousePos = this->worldCam.getMouseGlobalPos();
+		sf::Vector2i mousePos = Input::get().getMousePosition();
+		sf::Vector2f globalMouse = this->worldCam.getGlobalMousePos();
+		sf::Vector2i chunkIndex = this->grid.getChunkIndex(globalMouse);
+		sf::Vector2i cellIndex = this->grid.getCellIndex(globalMouse);
+	
+		sf::Vector2i relVec = chunkIndex - this->grid.getChunkIndex(this->worldCam.getWorldPos());
+		relVec.x += this->grid.getCols() / 2;
+		relVec.y += this->grid.getRows() / 2;
+		relVec.y = (this->grid.getRows() - relVec.y) - 1;
 
-		sf::Vector2i gridIndex = this->grid.getChunkIndex(mousePos);
-		sf::Vector2i cellIndex = this->grid.getCellIndex(mousePos);
+		this->grid.getChunk(relVec)->setData(cellIndex.x, cellIndex.y, 7);
+		this->grid.getChunk(relVec)->setModified(true);
+		this->grid.updateUVCoords(sf::Vector2u(relVec));
 
-		std::cout << "x: " << mousePos.x << " y: " << mousePos.y << 
+		std::cout << "x: " << globalMouse.x << " y: " << globalMouse.y <<
 			" CellX: " << cellIndex.x << " CellY: " << cellIndex.y <<
-			" GridX: " << gridIndex.x << " GridY: " << gridIndex.y << std::endl;
+			" ChubkX: " << relVec.x << " ChunkY: " << relVec.y << std::endl;
 	}
 }
 
