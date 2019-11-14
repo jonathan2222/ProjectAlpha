@@ -2,7 +2,7 @@
 
 using namespace pa;
 
-Chunk::Chunk(const sf::Vector2i& index)
+Chunk::Chunk(const sf::Vector2i& index) : modified(false)
 {
 	this->cells = new PA_BYTE[CHUNK_AREA];
 }
@@ -35,4 +35,14 @@ void pa::Chunk::setAllData(PA_BYTE* data)
 	{
 		this->cells[i] = data[i];
 	}
+}
+
+bool pa::Chunk::isModified() const
+{
+	return this->modified;
+}
+
+void pa::Chunk::setModified(bool modified)
+{
+	this->modified = modified;
 }

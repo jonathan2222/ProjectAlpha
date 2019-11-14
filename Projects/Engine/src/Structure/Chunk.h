@@ -25,8 +25,12 @@ namespace pa {
 		PA_BYTE* getAllData();
 		void setAllData(PA_BYTE* data);
 
+		bool isModified() const;
+		void setModified(bool modified);
+
 	private:
 		PA_BYTE* cells;
+		bool modified;
 
 	};
 }

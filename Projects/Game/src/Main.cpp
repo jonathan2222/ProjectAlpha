@@ -40,7 +40,7 @@ int main(int argc, char* argv[])
 	const int gridCols = 9;
 
 	MyGenerator generator;
-	pa::World testWorld(gridRows, gridCols, &generator);
+	pa::World testWorld(gridRows, gridCols, &generator, "res/World/TestWorld");
 
 	pa::Renderer renderer;
 

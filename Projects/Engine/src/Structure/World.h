@@ -4,6 +4,7 @@
 #include "GridManager.h"
 #include "Generation/WorldBuilder.h"
 #include "Generation/Generator.h"
+#include "../Serialization/WorldLoader.h"
 
 #include "Camera.h"
 
@@ -12,8 +13,8 @@ namespace pa
 	class World
 	{
 	public:
-		World(int rows, int cols, Generator* generator);
-
+		World(int rows, int cols, Generator* generator, const std::string& name);
+		
 		void draw(sf::RenderWindow& win, const sf::RenderStates& state);
 		void update(const float& dt);
 
@@ -32,6 +33,7 @@ namespace pa
 
 		GridManager grid;
 		WorldBuilder builder;
+		WorldLoader loader;
 		sf::Vector2i gridPos;
 	};
 }
