@@ -18,6 +18,8 @@ namespace pa
 		void draw(sf::RenderWindow& win, const sf::RenderStates& state);
 		void update(const float& dt);
 
+		void saveChunks();
+		void loadChunks();
 		void updateChunks();
 
 		sf::Vector2i getGridPos() const;

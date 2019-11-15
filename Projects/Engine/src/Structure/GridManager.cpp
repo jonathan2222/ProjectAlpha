@@ -37,7 +37,7 @@ std::vector<Chunk*>& pa::GridManager::getChunks()
 
 void pa::GridManager::updateUVCoords(const sf::Vector2u chunkIndex)
 {
-	if (chunkIndex.x <= this->cols && chunkIndex.y <= this->cols) {
+	if (chunkIndex.x <= this->cols && chunkIndex.y <= this->rows) {
 
 		Chunk* chunk = this->chunks[chunkIndex.x + chunkIndex.y * this->cols];
 

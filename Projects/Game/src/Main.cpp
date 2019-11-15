@@ -61,5 +61,7 @@ int main(int argc, char* argv[])
 		timer.update();
 	}
 
+	testWorld.saveChunks();
+
 	return 0;
 }

@@ -35,7 +35,7 @@ void pa::World::update(const float& dt)
 		relVec.x += this->grid.getCols() / 2;
 		relVec.y += this->grid.getRows() / 2;
 		relVec.y = (this->grid.getRows() - relVec.y) - 1;
-
+		
 		this->grid.getChunk(relVec)->setData(cellIndex.x, cellIndex.y, 7);
 		this->grid.getChunk(relVec)->setModified(true);
 		this->grid.updateUVCoords(sf::Vector2u(relVec));
@@ -46,19 +46,18 @@ void pa::World::update(const float& dt)
 	}
 }
 
-void pa::World::updateChunks()
+void pa::World::saveChunks()
 {
-	std::vector<ChunkFileKey>::iterator it;
-
 	bool hasSaved = false;
 
 	std::vector<pa::Chunk*> chunks = grid.getChunks();
 	const int cols = grid.getCols();
+	const int rows = grid.getRows();
 	for (int x = 0; x < cols; x++) {
-		for (int y = 0; y < grid.getRows(); y++) {
-			pa::Chunk* c = chunks[x + y*cols];
-			int chunkX = gridPos.x + x;
-			int chunkY = gridPos.y + y;
+		for (int y = 0; y < rows; y++) {
+			pa::Chunk* c = chunks[x + y * cols];
+			int chunkX = gridPos.x + x - cols/2;
+			int chunkY = gridPos.y + y - rows/2;
 
 			// Save chunk if modifed.
 			if (c->isModified())
@@ -67,6 +66,28 @@ void pa::World::updateChunks()
 				this->loader.saveChunk(c, chunkX, chunkY);
 				hasSaved = true;
 			}
+		}
+	}
+
+	// If one or more chunks was saved, save the lookup table again.
+	if (hasSaved)
+	{
+		this->loader.saveLookupTable();
+	}
+}
+
+void pa::World::loadChunks()
+{
+	std::vector<ChunkFileKey>::iterator it;
+
+	std::vector<pa::Chunk*> chunks = grid.getChunks();
+	const int cols = grid.getCols();
+	const int rows = grid.getRows();
+	for (int x = 0; x < cols; x++) {
+		for (int y = 0; y < rows; y++) {
+			pa::Chunk* c = chunks[x + y * cols];
+			int chunkX = gridPos.x + x - cols / 2;
+			int chunkY = gridPos.y + y - rows / 2;
 
 			// If chunk was not found on disk, generate a new one.
 			it = this->loader.find(chunkX, chunkY);
@@ -79,16 +100,16 @@ void pa::World::updateChunks()
 				// Load the chunk from disk.
 				this->loader.updateChunk(c, chunkX, chunkY);
 			}
-			
+
 			grid.updateUVCoords(sf::Vector2u(x, y));
 		}
 	}
+}
 
-	// If one or more chunks was saved, save the lookup table again.
-	if (hasSaved)
-	{
-		this->loader.saveLookupTable();
-	}
+void pa::World::updateChunks()
+{
+	loadChunks();
+	saveChunks();
 }
 
 sf::Vector2i pa::World::getGridPos() const
